@@ -16,7 +16,7 @@ function drawSquare(x, y, color) {
 	ctx.strokeRect(x * SQ, y * SQ, SQ, SQ);
 }
 
-// create the board
+// create the boarddsffsdsdfsd
 
 let board = [];
 for (r = 0; r < ROW; r++) {
