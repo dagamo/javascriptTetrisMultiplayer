@@ -1,0 +1,50 @@
+<html>
+
+<head>
+   <!-- Bootstrap Core CSS -->
+   <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+   <!-- page css -->
+   <link href="css/pages/login-register-lock.css" rel="stylesheet">
+   <!-- Custom CSS -->
+   <link href="css/style.css" rel="stylesheet">
+
+   <!-- You can change the theme colors from here -->
+   <link href="css/colors/default-dark.css" id="theme" rel="stylesheet">
+   
+    <title>Tetris Game JS</title>
+    <style>
+        #score{
+            display: inline-block;
+        }
+        div{
+            font-size: 25px;
+            font-weight: bold;
+            font-family: monospace;
+            text-align: center;
+        }
+        canvas{
+            display: block;
+            margin:0 auto;
+        }
+    </style>
+</head>
+<body>
+    <ul class="chatonline style-none" id="divUsuarios"> </ul>
+   <div>Partida<a target="_blank" href="https://www.youtube.com/c/codeexplained">Code Explained</a></div><br>
+    <canvas id="tetris" width="200" height="400"></canvas>
+    <div>
+        Score : <div id="score">0</div>
+    </div>
+ 
+    <script src="js/libs/jquery.min.js"></script>
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script src="js/socket-chat-jquery.js"></script>
+    <script src="js/socket-chat.js"></script>
+    <script src="tetrominoes.js"></script>
+    <script src="piece.js"></script>
+    <script src="tetris.js"></script>
+    
+   
+    
+</body>
+</html>
