@@ -1,0 +1,26 @@
+{
+  "name": "javascripttetrismultiplayer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket-io": "^1.0.0",
+    "socket.io": "^2.2.0",
+    "socket.io-client": "^2.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dagamo/javascriptTetrisMultiplayer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dagamo/javascriptTetrisMultiplayer/issues"
+  },
+  "homepage": "https://github.com/dagamo/javascriptTetrisMultiplayer#readme"
+}
