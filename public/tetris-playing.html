@@ -1,0 +1,111 @@
+<html>
+
+<head>
+   <!-- Bootstrap Core CSS -->
+   <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+   <!-- page css -->
+   <link href="css/pages/login-register-lock.css" rel="stylesheet">
+   <!-- Custom CSS -->
+   <link href="css/style.css" rel="stylesheet">
+
+   <!-- You can change the theme colors from here -->
+   <link href="css/colors/default-dark.css" id="theme" rel="stylesheet">
+   
+    <title>Tetris Game JS</title>
+    <style>
+        #score{
+            display: inline-block;
+        }
+        div{
+            font-size: 25px;
+            font-weight: bold;
+            font-family: monospace;
+            text-align: center;
+        }
+        canvas{
+            display: block;
+            margin:0 auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- <ul class="chatonline style-none" id="divUsuarios"> </ul> -->
+    <div class="container">
+      <!-- Modal  invitation -->
+        <div class="modal" id="modalInvitation" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Invitacion online  </h5>
+                  <button type="button" class="close denegarInvitacion" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div id='oponenteID'></div>
+                  <div id='userID'></div>
+                  <p id="textoModal">..</p>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" id="aceptarInvitacion" class="btn btn-primary" >Aceptar</button>
+                  <button type="button" class="btn btn-secondary denegarInvitacion" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal Center Waiting invitation -->
+<div class="modal fade" id="modalTwo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Esperando respuesta...</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" id="bodyModalTwo">
+           
+        </div>
+      </div>
+    </div>
+  </div>
+      <div class="row">
+          <div class="col-sm">
+              <ul class="chatonline style-none" id="divUsuarios" style="list-style: none"> </ul>
+            </div>
+        <div class="col-sm">
+          <div>Your Game table</div><br>
+      <canvas id="tetris" width="200" height="400"></canvas>
+      <div>
+          Score : <div id="score">0</div>
+      </div>
+        </div>
+        <div class="col-sm">
+          <div style="display: none" id="tablaOponente">
+              <div>Tabla del oponente</div><br>
+              <canvas id="tetrisOponente" width="200" height="400"></canvas>
+              <div>
+                  Score : <div id="score">0</div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+ 
+    <script src="js/libs/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="http://localhost:3000/socket.io/socket.io.js"></script>
+    <script src="js/socket-chat-jquery.js"></script>
+    <script src="js/socket-chat.js"></script>
+    <script src="tetrominoes.js"></script>
+    <script src="piece.js"></script>
+    <script src="tetris.js"></script>
+    
+   
+    
+</body>
+</html>

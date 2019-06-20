@@ -20,11 +20,9 @@ class Usuarios {
 		return this.personas;
 	}
 
-	agregarOponente(id, otherID) {
+	agregarOponente(id) {
 		let personaIndex = this.personas.findIndex((persona) => persona.id === id);
-		let OponenteIndex = this.personas.findIndex((persona) => persona.id === otherID);
-		this.personas[OponenteIndex].oponente = id;
-		this.personas[personaIndex].oponente = id;
+		this.personas[personaIndex].salaGame = `sala-${id}`;
 		return this.personas;
 	}
 
@@ -37,8 +35,13 @@ class Usuarios {
 	getPersonas() {
 		return this.personas;
 	}
-	getPersonasAvailable() {
-		let personas = this.personas.filter((persona) => !persona.oponente);
+	getPersonasAvailable(nombre) {
+		let personas = this.personas.filter((persona) => {
+			if (!persona.salaGame) {
+				console.log('no coincide el nombre', nombre);
+				return persona;
+			}
+		});
 		return personas;
 	}
 	getPersonasPorSala(sala) {
