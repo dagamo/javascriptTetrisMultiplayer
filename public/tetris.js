@@ -28,10 +28,16 @@ function drawSquareOponente(x, y, color) {
 // create the boarddsffsdsdfsd
 
 let board = [];
+let boardOponente = [];
+let salaBoard = 0;
+let score = 0;
+let scoreOponente = 0;
 
 for (r = 0; r < ROW; r++) {
 	board[r] = [];
+	boardOponente[r] = [];
 	for (c = 0; c < COL; c++) {
+		boardOponente[r][c] = VACANT;
 		board[r][c] = VACANT;
 	}
 }
@@ -39,9 +45,12 @@ for (r = 0; r < ROW; r++) {
 //
 function clearBoard() {
 	board = [];
+	boardOponente = [];
 	for (r = 0; r < ROW; r++) {
 		board[r] = [];
+		boardOponente[r] = [];
 		for (c = 0; c < COL; c++) {
+			boardOponente[r][c] = VACANT;
 			board[r][c] = VACANT;
 		}
 	}
@@ -51,7 +60,7 @@ function drawBoard() {
 	for (r = 0; r < ROW; r++) {
 		for (c = 0; c < COL; c++) {
 			drawSquare(c, r, board[r][c]);
-			drawSquareOponente(c, r, board[r][c]);
+			drawSquareOponente(c, r, boardOponente[r][c]);
 		}
 	}
 }

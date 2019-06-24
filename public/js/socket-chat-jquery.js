@@ -97,9 +97,9 @@ function renderTime() {
 	html = '<h1 id="time">5</h1>';
 	modalTwo.html(html);
 }
-function startTime() {
+function startTime(divID, valStart) {
 	return new Promise((resolve, reject) => {
-		let count = 5;
+		let count = valStart;
 		let setTime = window.setInterval(() => {
 			if (count === 0) {
 				clearInterval(setTime);
@@ -107,7 +107,7 @@ function startTime() {
 			}
 			else {
 				count--;
-				$('#time').text(count);
+				$('#' + divID).text(count);
 			}
 		}, 1000);
 	});
@@ -143,10 +143,8 @@ divUsuarios.on('click', 'a', function() {
 	if (id) {
 		socket.emit('sendInvitation', { nombre, id }, (resp) => {
 			console.log('Respuesta', resp);
+			stopGame();
 		});
-		// socket.emit('joinGame', { idSala: id }, (resp) => {
-		// 	console.log(resp);
-		// });
 		renderModal('modalTwo', null);
 		activeLoading();
 	}
@@ -157,20 +155,31 @@ divUsuarios.on('click', 'a', function() {
 
 aceptarInvitacion.on('click', () => {
 	let id = $('#oponenteID').text();
+	let myID = $('#ID').text();
+	salaBoard = id;
 	hideModal('modalInvitation');
 	availableTable('block');
 	renderModal('modalTwo', null);
-	clearBoard();
 	renderTime();
-	startTime().then(({ state }) => {
+	stopGame();
+	startTime('time', 5).then(({ state }) => {
 		if (state === 'start') {
 			hideModal('modalTwo');
+			startGame();
 		}
+		startTime('timing', 120).then(({ state }) => {
+			if (state === 'start') {
+				$('#timing').text('');
+				socket.emit('gameOver', { idSala: salaBoard, score, scoreOponente }, (res) => {
+					console.log(res);
+				});
+			}
+		});
 	});
 	socket.emit('responseInvitation', { accept: true, id }, (resp) => {
 		console.log(resp);
 	});
-	socket.emit('joinGame', { idSala: id }, (resp) => {
+	socket.emit('joinGame', { idSala: id, myID }, (resp) => {
 		console.log(resp);
 	});
 });

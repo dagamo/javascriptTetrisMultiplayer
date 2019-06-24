@@ -20,6 +20,18 @@ function randomPiece() {
 	return new Piece(PIECES[r][0], PIECES[r][1]);
 }
 //lock the piece
+function stopGame() {
+	gameOver = true;
+	clearBoard();
+	drawBoard();
+}
+function startGame() {
+	gameOver = false;
+	clearBoard();
+	drawBoard();
+	p = randomPiece();
+	drop();
+}
 
 class Piece {
 	constructor(tetromino, color) {
@@ -116,7 +128,6 @@ class Piece {
 	}
 
 	lock() {
-		let score = 0;
 		for (r = 0; r < this.activeTetromino.length; r++) {
 			for (c = 0; c < this.activeTetromino.length; c++) {
 				// we skip the vacant squares
@@ -131,6 +142,13 @@ class Piece {
 				}
 				// we lock the piece
 				board[this.y + r][this.x + c] = this.color;
+				socket.emit(
+					'sendPiece',
+					{ idSala: salaBoard, y: [ this.y + r ], x: [ this.x + c ], color: this.color },
+					(res) => {
+						console.log(res);
+					}
+				);
 			}
 		}
 		// remove full rows
@@ -153,6 +171,9 @@ class Piece {
 				}
 				// increment the score
 				score += 10;
+				socket.emit('aumentedScore', { idSala: salaBoard, score }, (res) => {
+					console.log(res);
+				});
 			}
 		}
 		// update the board

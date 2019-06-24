@@ -40,11 +40,31 @@ socket.on('responseInvitation', function({ accept, nombre, idSala }) {
 		renderModal('modalInvitation', { name: 'textoModal', description: `${nombre} no ha aceptado tu invitacioon` });
 	}
 	else {
-		socket.emit('joinGame', { idSala }, (resp) => {
+		salaBoard = idSala;
+		socket.emit('joinGame', { idSala, myID: idSala }, (resp) => {
 			console.log(resp);
 		});
 	}
 });
+//on render piece
+socket.on('renderPiece', ({ params }) => {
+	console.log('params', params);
+	boardOponente[params.y][params.x] = params.color;
+});
+//on score
+socket.on('renderScore', ({ score }) => {
+	$('#scoreOponente').text(score);
+});
+socket.on('gameOver', (params) => {
+	if (params.score > params.scoreOponente) {
+		console.log(':(');
+	}
+	else {
+		console.log('You win');
+	}
+	$('#scoreOponente').text(score);
+});
+
 // on the welcome
 socket.on('welcomeGame', ({ message, sala }) => {
 	console.log(message);
@@ -53,10 +73,19 @@ socket.on('welcomeGame', ({ message, sala }) => {
 	renderModal('modalTwo', null);
 	clearBoard();
 	renderTime();
-	startTime().then(({ state }) => {
+	startTime('time', 5).then(({ state }) => {
 		if (state === 'start') {
 			hideModal('modalTwo');
+			startGame();
 		}
+		startTime('timing', 120).then(({ state }) => {
+			if (state === 'start') {
+				$('#timing').text('');
+				socket.emit('gameOver', { idSala: salaBoard, score, scoreOponente }, (res) => {
+					console.log(res);
+				});
+			}
+		});
 	});
 });
 
@@ -99,3 +128,9 @@ socket.on('listaPersona', function(personas) {
 socket.on('mensajePrivado', function(mensaje) {
 	console.log('Mensaje Privado:', mensaje);
 });
+
+socketEmit = (type, params) => {
+	socket.emit(type, params, (resp) => {
+		console.log(resp);
+	});
+};

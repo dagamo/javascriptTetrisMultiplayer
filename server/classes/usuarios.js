@@ -5,12 +5,7 @@
 
 class Usuarios {
 	constructor() {
-		this.personas = [
-			{ id: 1, nombre: 'Prueba 1' },
-			{ id: 2, nombre: 'Prueba 2' },
-			{ id: 3, nombre: 'Prueba 3' },
-			{ id: 4, nombre: 'Prueba 4', oponente: 1 }
-		];
+		this.personas = [];
 	}
 
 	agregarPersona(id, nombre) {
@@ -20,9 +15,9 @@ class Usuarios {
 		return this.personas;
 	}
 
-	agregarOponente(id) {
+	agregarOponente(sala, id) {
 		let personaIndex = this.personas.findIndex((persona) => persona.id === id);
-		this.personas[personaIndex].salaGame = `sala-${id}`;
+		this.personas[personaIndex].salaGame = `sala-${sala}`;
 		return this.personas;
 	}
 

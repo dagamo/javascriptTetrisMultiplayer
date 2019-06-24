@@ -45,8 +45,8 @@ io.on('connection', (client) => {
 		}
 	});
 	//Create the sala game
-	client.on('joinGame', ({ idSala }, callback) => {
-		usuarios.agregarOponente(idSala);
+	client.on('joinGame', ({ idSala, myID }, callback) => {
+		//	usuarios.agregarOponente(idSala, myID);
 		client.join(`sala-${idSala}`);
 		client.broadcast
 			.to(`sala-${idSala}`)
@@ -64,6 +64,22 @@ io.on('connection', (client) => {
 		callback({ message: 'Te has unido a la sala de juego', sala: `sala-${idSala}` });
 	});
 
+	//Render piece
+	client.on('sendPiece', (params, callback) => {
+		client.broadcast.to(`sala-${params.idSala}`).emit('renderPiece', { params });
+
+		callback({ message: 'se han enviado los params', params });
+	});
+	//Aumented score
+	client.on('aumentedScore', ({ idSala, score }, callback) => {
+		client.broadcast.to(`sala-${idSala}`).emit('renderScore', { score });
+		callback({ message: 'Se ha enviado el score' });
+	});
+	//gameOver
+	client.on('gameOver', (params, callback) => {
+		client.broadcast.to(`sala-${params.idSala}`).emit('gameOver', params);
+		callback('res');
+	});
 	client.on('crearMensaje', (data, callback) => {
 		let persona = usuarios.getPersona(client.id);
 
