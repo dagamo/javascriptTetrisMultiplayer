@@ -26,6 +26,7 @@ socket.on('disconnect', function() {
 });
 // on a Invitation
 socket.on('invitationRequest', function({ nombre, idSala, id }) {
+	$('#aceptarInvitacion').css('display', 'block');
 	renderModal('modalInvitation', {
 		id: idSala,
 		oponenteID: id,
@@ -37,9 +38,11 @@ socket.on('invitationRequest', function({ nombre, idSala, id }) {
 socket.on('responseInvitation', function({ accept, nombre, idSala }) {
 	if (!accept) {
 		hideModal('modalTwo');
+		$('#aceptarInvitacion').css('display', 'none');
 		renderModal('modalInvitation', { name: 'textoModal', description: `${nombre} no ha aceptado tu invitacioon` });
 	}
 	else {
+		$(`#${oponenteID}`).text('jugando..');
 		salaBoard = idSala;
 		socket.emit('joinGame', { idSala, myID: idSala }, (resp) => {
 			console.log(resp);
@@ -53,15 +56,45 @@ socket.on('renderPiece', ({ params }) => {
 });
 //on score
 socket.on('renderScore', ({ score }) => {
+	for (r = 0; r < ROW; r++) {
+		let isRowFull = true;
+		for (c = 0; c < COL; c++) {
+			isRowFull = isRowFull && boardOponente[r][c] != VACANT;
+		}
+		if (isRowFull) {
+			// if the row is full
+			// we move down all the rows above it
+			for (let y = r; y > 1; y--) {
+				for (c = 0; c < COL; c++) {
+					boardOponente[y][c] = boardOponente[y - 1][c];
+				}
+			}
+			// the top row boardOponente[0][..] has no row above it
+			for (c = 0; c < COL; c++) {
+				boardOponente[0][c] = VACANT;
+			}
+		}
+	}
 	$('#scoreOponente').text(score);
 });
 socket.on('gameOver', (params) => {
+	let text = {
+		name: 'textoModal',
+		userID: '',
+		oponenteID: '',
+		description: 'Game Over.....You Win'
+	};
+	$(`#${oponenteID}`).text('invitar');
+	$('#aceptarInvitacion').css('display', 'none');
+	$('#timing').css('display', 'none');
+	$('#tablaOponente').css('display', 'none');
+	stopGame();
+
 	if (params.score > params.scoreOponente) {
-		console.log(':(');
+		text.description = 'Game Over.... You Lost :(';
 	}
-	else {
-		console.log('You win');
-	}
+
+	renderModal('modalInvitation', text);
 	$('#scoreOponente').text(score);
 });
 
@@ -75,10 +108,11 @@ socket.on('welcomeGame', ({ message, sala }) => {
 	renderTime();
 	startTime('time', 5).then(({ state }) => {
 		if (state === 'start') {
+			$('#timing').css('display', 'block');
 			hideModal('modalTwo');
 			startGame();
 		}
-		startTime('timing', 120).then(({ state }) => {
+		startTime('timing', 240).then(({ state }) => {
 			if (state === 'start') {
 				$('#timing').text('');
 				socket.emit('gameOver', { idSala: salaBoard, score, scoreOponente }, (res) => {

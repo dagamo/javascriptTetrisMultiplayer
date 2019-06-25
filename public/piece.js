@@ -72,7 +72,7 @@ class Piece {
 	// move Down the piece
 
 	moveDown() {
-		if (!this.collision(0, 1, this.activeTetromino)) {
+		if (!this.collision(0, 1, this.activeTetromino) && !gameOver) {
 			this.unDraw();
 			this.y++;
 			this.draw();
@@ -136,19 +136,37 @@ class Piece {
 				}
 				// pieces to lock on top = game over
 				if (this.y + r < 0) {
-					alert('Game Over');
+					if (salaBoard) {
+						socket.emit('gameOver', { idSala: salaBoard, score, scoreOponente }, (res) => {
+							console.log(res);
+						});
+					}
+					else {
+						let text = {
+							name: 'textoModal',
+							userID: '',
+							oponenteID: '',
+							description: `Game over => Score: ${score}`
+						};
+						$('#aceptarInvitacion').css('display', 'none');
+						stopGame();
+						renderModal('modalInvitation', text);
+					}
 					// stop request animation frame
 					gameOver = true;
+					return false;
 				}
 				// we lock the piece
 				board[this.y + r][this.x + c] = this.color;
-				socket.emit(
-					'sendPiece',
-					{ idSala: salaBoard, y: [ this.y + r ], x: [ this.x + c ], color: this.color },
-					(res) => {
-						console.log(res);
-					}
-				);
+				if (salaBoard) {
+					socket.emit(
+						'sendPiece',
+						{ idSala: salaBoard, y: [ this.y + r ], x: [ this.x + c ], color: this.color },
+						(res) => {
+							console.log(res);
+						}
+					);
+				}
 			}
 		}
 		// remove full rows
@@ -171,9 +189,11 @@ class Piece {
 				}
 				// increment the score
 				score += 10;
-				socket.emit('aumentedScore', { idSala: salaBoard, score }, (res) => {
-					console.log(res);
-				});
+				if (salaBoard) {
+					socket.emit('aumentedScore', { idSala: salaBoard, score }, (res) => {
+						console.log(res);
+					});
+				}
 			}
 		}
 		// update the board

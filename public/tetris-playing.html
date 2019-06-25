@@ -17,7 +17,7 @@
             display: inline-block;
         }
         div{
-            font-size: 25px;
+            font-size: 18px;
             font-weight: bold;
             font-family: monospace;
             text-align: center;
@@ -26,11 +26,33 @@
             display: block;
             margin:0 auto;
         }
+        .img-circle{
+          border-style: solid;
+    border-width: 2px;
+    border-color:#398bf7;
+    
+        }
+        body{
+          background: #c9d6ff; /* fallback for old browsers */
+  background: -webkit-linear-gradient(to bottom, #c9d6ff, #e2e2e2); /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to bottom, #c9d6ff, #e2e2e2); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  }
+  #table-usuarios{
+    background: #F2F2F2;
+      border-style: solid;
+    border-width: 2px;
+    border-color:#83a4d4;
+    padding-right: 1.5em;
+    margin-top: 4%;
+    border-top-right-radius:3%;
+    border-bottom-right-radius: 3%;
+
+  }
     </style>
 </head>
 <body>
     <!-- <ul class="chatonline style-none" id="divUsuarios"> </ul> -->
-    <div class="container">
+    <div >
       <!-- Modal  invitation -->
         <div class="modal" id="modalInvitation" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
@@ -71,18 +93,21 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-sm" id="timing">
+    <div class="col-sm" id="timing" style='display: none'>
       Time:5  
       </div>
   
 </div>
       <div class="row">
-          <div class="col-sm">
+          <div class=".col-sm-4" id="table-usuarios" >
               <ul class="chatonline style-none" id="divUsuarios" style="list-style: none"> </ul>
             </div>
         <div class="col-sm">
           <div>Your Game table</div><br>
-      <canvas id="tetris" width="200" height="400"></canvas>
+          <div  class='table'>
+            <canvas id="tetris" width="200" height="400"></canvas>
+      
+          </div>
       <div>
           Score : <div id="score">0</div>
       </div>
@@ -90,7 +115,9 @@
         <div class="col-sm">
           <div style="display: none" id="tablaOponente">
               <div>Tabla del oponente</div><br>
-              <canvas id="tetrisOponente" width="200" height="400"></canvas>
+              <div class="table">
+                  <canvas id="tetrisOponente"  width="200" height="400"></canvas>
+              </div>
               <div>
                   Score : <div id="scoreOponente">0</div>
               </div>

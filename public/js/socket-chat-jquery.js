@@ -21,7 +21,7 @@ function renderizarUsuarios(personas) {
 	var html = '';
 
 	html += '<li>';
-	html += '    <a href="javascript:void(0)" class="active"> Jugador connectados</a>';
+	html += '    <a href="javascript:void(0)" class="active"> Friends</a>';
 	html += '</li>';
 
 	for (var i = 0; i < personas.length; i++) {
@@ -34,7 +34,9 @@ function renderizarUsuarios(personas) {
 				nombre +
 				'"  href="javascript:void(0)"><img src="assets/images/users/1.jpg" alt="user-img" class="img-circle"> <span>' +
 				personas[i].nombre +
-				' <small class="text-success"> Jugar Partida</small></span></a>';
+				' <small class="text-success" id="' +
+				personas[i].id +
+				'">Invitar</small></span></a>';
 			html += '</li>';
 		}
 	}
@@ -140,6 +142,7 @@ function availableTable(mode) {
 divUsuarios.on('click', 'a', function() {
 	var id = $(this).data('id');
 	var nombre = params.get('nombre');
+	oponenteID = id;
 	if (id) {
 		socket.emit('sendInvitation', { nombre, id }, (resp) => {
 			console.log('Respuesta', resp);
@@ -157,17 +160,20 @@ aceptarInvitacion.on('click', () => {
 	let id = $('#oponenteID').text();
 	let myID = $('#ID').text();
 	salaBoard = id;
+	oponenteID = id;
 	hideModal('modalInvitation');
 	availableTable('block');
 	renderModal('modalTwo', null);
 	renderTime();
 	stopGame();
+	$(`#${id}`).text('jugando..');
 	startTime('time', 5).then(({ state }) => {
 		if (state === 'start') {
+			$('#timing').css('display', 'block');
 			hideModal('modalTwo');
 			startGame();
 		}
-		startTime('timing', 120).then(({ state }) => {
+		startTime('timing', 240).then(({ state }) => {
 			if (state === 'start') {
 				$('#timing').text('');
 				socket.emit('gameOver', { idSala: salaBoard, score, scoreOponente }, (res) => {
