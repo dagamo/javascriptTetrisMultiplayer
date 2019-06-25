@@ -1,4 +1,4 @@
-var socket = io('https://tetris-multiplayer-real-time.herokuapp.com/');
+var socket = io('http://localhost:3000');
 
 var params = new URLSearchParams(window.location.search);
 console.log('Params', params);
@@ -46,6 +46,26 @@ socket.on('responseInvitation', function({ accept, nombre, idSala }) {
 		salaBoard = idSala;
 		socket.emit('joinGame', { idSala, myID: idSala }, (resp) => {
 			console.log(resp);
+			hideModal('modalInvitation');
+			availableTable('block');
+			renderModal('modalTwo', null);
+			clearBoard();
+			renderTime();
+			startTime('time', 5).then(({ state }) => {
+				if (state === 'start') {
+					$('#timing').css('display', 'block');
+					hideModal('modalTwo');
+					startGame();
+				}
+				startTime('timing', 240).then(({ state }) => {
+					if (state === 'start') {
+						$('#timing').text('');
+						socket.emit('gameOver', { idSala: salaBoard, score, scoreOponente }, (res) => {
+							console.log(res);
+						});
+					}
+				});
+			});
 		});
 	}
 });
@@ -101,26 +121,6 @@ socket.on('gameOver', (params) => {
 // on the welcome
 socket.on('welcomeGame', ({ message, sala }) => {
 	console.log(message);
-	hideModal('modalInvitation');
-	availableTable('block');
-	renderModal('modalTwo', null);
-	clearBoard();
-	renderTime();
-	startTime('time', 5).then(({ state }) => {
-		if (state === 'start') {
-			$('#timing').css('display', 'block');
-			hideModal('modalTwo');
-			startGame();
-		}
-		startTime('timing', 240).then(({ state }) => {
-			if (state === 'start') {
-				$('#timing').text('');
-				socket.emit('gameOver', { idSala: salaBoard, score, scoreOponente }, (res) => {
-					console.log(res);
-				});
-			}
-		});
-	});
 });
 
 // socket.on('startGame', () => {
