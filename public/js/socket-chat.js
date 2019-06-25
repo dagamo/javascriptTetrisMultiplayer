@@ -1,4 +1,4 @@
-var socket = io('http://localhost:3000');
+var socket = io('https://tetris-multiplayer-real-time.herokuapp.com/');
 
 var params = new URLSearchParams(window.location.search);
 console.log('Params', params);
